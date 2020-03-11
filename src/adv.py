@@ -1,4 +1,9 @@
 from room import Room
+from player import Player
+from item import Item
+
+#create REPL
+choices = ['n', 's', 'e', 'w']
 
 # Declare all the rooms
 
@@ -38,6 +43,8 @@ room['treasure'].s_to = room['narrow']
 #
 
 # Make a new player object that is currently in the 'outside' room.
+
+player = Player('You', room['outside'], items = [])
 
 # Write a loop that:
 #
