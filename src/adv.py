@@ -2,28 +2,25 @@ from room import Room
 from player import Player
 from item import Item
 
-#create REPL
-choices = ['n', 's', 'e', 'w']
-
 # Declare all the rooms
 
 room = {
-    'outside':  Room("Outside Cave Entrance",
+    'outside': Room("Outside Cave Entrance",
                      "North of you, the cave mount beckons"),
 
-    'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east."""),
+    'foyer': Room("Foyer", """Dim light filters in from the south. Dusty
+                    passages run north and east."""),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
-into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm."""),
+                    into the darkness. Ahead to the north, a light flickers in
+                    the distance, but there is no way across the chasm."""),
 
-    'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air."""),
+    'narrow': Room("Narrow Passage", """The narrow passage bends here from west
+                    to north. The smell of gold permeates the air."""),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
-chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+                    chamber! Sadly, it has already been completely emptied by
+                    earlier adventurers. The only exit is to the south."""),
 }
 
 
@@ -44,7 +41,14 @@ room['treasure'].s_to = room['narrow']
 
 # Make a new player object that is currently in the 'outside' room.
 
-player = Player('You', room['outside'], items = [])
+def location_check():
+    if room['outside'].n_to == room['narrow']:
+        print(True)
+    else:
+        print(False)
+
+# location_check()
+player = Player('You', room['outside'])
 
 # Write a loop that:
 #
@@ -56,3 +60,44 @@ player = Player('You', room['outside'], items = [])
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+playing = True
+
+def getInput():
+    action = input("Input an action: ")
+    if action[0] == "q":
+        global playing
+        playing = False
+        print("Bye!")
+    
+    elif action[0] == "n":
+        if player.current_room.n_to == None:
+            print("\nNothin' over there. Pick a new direction")
+        else:
+            player.moveRoom(player.current_room.n_to)
+    
+    elif action[0] == "e":
+        if player.current_room.e_to == None:
+            print("\nNothin' over there. Pick a new direction")
+        else:
+            player.moveRoom(player.current_room.e_to)
+
+    elif action[0] == "s":
+        if player.current_room.s_to == None:
+            print("\nNothin' over there. Pick a new direction")
+        else:
+            player.moveRoom(player.current_room.s_to)
+
+    elif action[0] == "w":
+        if player.current_room.w_to == None:
+            print("\nNothin' over there. Pick a new direction")
+        else:
+            player.moveRoom(player.current_room.w_to)
+
+    else:
+        print("\nyou must use, 'n', 'e', 's', and 'w'")
+    
+while playing:
+    print("\nLocation: ", player.current_room.name)
+    print("Description of surroundings: ", player.current_room.description)
+    getInput()
